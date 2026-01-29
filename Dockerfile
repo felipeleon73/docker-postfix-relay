@@ -48,6 +48,8 @@ RUN chmod a+rx /usr/local/bin/* && \
     postconf -e virtual_maps='hash:/etc/postfix/virtual, regexp:/etc/postfix/virtual_regexp' && \
     postconf -e sender_canonical_maps=regexp:/etc/postfix/sender_canonical_regexp && \
     postconf -e local_header_rewrite_clients=static:all && \
+    postconf -e smtpd_tls_security_level = none \
+    postconf -e smtpd_use_tls = no \
     postconf compatibility_level=2 && \
     postmap /etc/postfix/sasl_passwd && \
     postmap /etc/postfix/virtual_regexp && \
