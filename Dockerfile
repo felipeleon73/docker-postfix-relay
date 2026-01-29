@@ -1,4 +1,4 @@
-FROM debian:bookworm
+FROM debian:9
 
 VOLUME ["/var/log", "/var/spool/postfix"]
 EXPOSE 25
@@ -19,7 +19,10 @@ ENV HOST=localhost \
     MAIL_NON_CANONICAL_DEFAULT='' \
     MESSAGE_SIZE_LIMIT=52428800
 
-RUN apt-get update && \
+RUN sed -i 's/deb.debian.org/archive.debian.org/g' /etc/apt/sources.list && \
+    sed -i 's/security.debian.org/archive.debian.org/g' /etc/apt/sources.list && \
+    sed -i '/stretch-updates/d' /etc/apt/sources.list && \
+    apt-get update && \
     apt-get upgrade -yqq && \
     echo "postfix postfix/mailname string $MAILNAME" | debconf-set-selections && \
     echo "postfix postfix/main_mailer_type string 'Internet Site'" | debconf-set-selections && \
